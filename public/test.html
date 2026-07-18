@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitchPulse AI - Test Suite Runner</title>
+    <!-- Outfit Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0e14;
+            color: #f3f4f6;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+        p.subtitle {
+            color: #9ca3af;
+            margin-bottom: 32px;
+        }
+        .test-card {
+            background-color: #10141d;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+        .test-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .test-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge-pass {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .badge-fail {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .assertion-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .assertion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .icon {
+            font-weight: bold;
+        }
+        .icon-pass { color: #10b981; }
+        .icon-fail { color: #ef4444; }
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PitchPulse AI Test Suite</h1>
+        <p class="subtitle">Automated business logic validation for offline simulators and routing assets.</p>
+        
+        <div id="testResults">
+            <!-- Test results will be appended here -->
+        </div>
+
+        <a href="index.html" class="back-link">&larr; Back to App Dashboard</a>
+    </div>
+
+    <!-- Inject Mocks and Logic under test -->
+    <script>
+        // Copy-pasted business logic components for unit testing
+        const nodeCoordinates = {
+            'gate-a': { x: 400, y: 50 },
+            'gate-b': { x: 750, y: 300 },
+            'gate-c': { x: 400, y: 550 },
+            'gate-d': { x: 50, y: 300 },
+            'block-101': { x: 400, y: 150 },
+            'block-102': { x: 150, y: 300 },
+            'block-103': { x: 400, y: 450 },
+            'block-104': { x: 650, y: 300 },
+            'node-restrooms': { x: 235, y: 255 },
+            'node-concessions': { x: 565, y: 345 },
+            'node-firstaid': { x: 235, y: 345 },
+            'node-recycle': { x: 565, y: 255 }
+        };
+
+        function simulateEcoAudit(type, text) {
+            const lowercase = text.toLowerCase();
+            if (lowercase.length < 8) {
+                return { verified: false };
+            }
+            if (type === 'recycling') {
+                return { verified: true, assessment: "Recycling checked.", savedCo2: 0.4, xpGained: 60 };
+            } else if (type === 'transport') {
+                return { verified: true, assessment: "Rail checked.", savedCo2: 2.1, xpGained: 100 };
+            } else if (type === 'reusable') {
+                return { verified: true, assessment: "Flask checked.", savedCo2: 0.6, xpGained: 40 };
+            }
+            return { verified: true, assessment: "Action checked.", savedCo2: 0.3, xpGained: 30 };
+        }
+
+        function simulateIncidentCommander(text) {
+            const t = text.toLowerCase();
+            if (t.includes('spill') || t.includes('wet') || t.includes('leak')) {
+                return { severity: "MODERATE", category: "Maintenance & Safety", staffAlert: "ALERT: Wet floor maintenance needed." };
+            } else if (t.includes('fight') || t.includes('crowd') || t.includes('bottleneck')) {
+                return { severity: "CRITICAL", category: "Security & Crowd Control", staffAlert: "CRITICAL ALERT: Crowd bottleneck." };
+            } else if (t.includes('heart') || t.includes('medical') || t.includes('injured')) {
+                return { severity: "CRITICAL", category: "Medical Emergency", staffAlert: "CRITICAL ALERT: Medical support." };
+            }
+            return { severity: "LOW", category: "General Operations", staffAlert: "OPERATIONAL ALERT: Local steward." };
+        }
+
+        function simulateTranslation(text) {
+            const lowercase = text.toLowerCase();
+            if (lowercase.includes('gate b') && lowercase.includes('busy')) {
+                return {
+                    en: text,
+                    es: "La Puerta B está ocupada actualmente. Utilice la Puerta A o D para un ingreso más rápido.",
+                    fr: "La porte B est actuellement occupée. Veuillez utiliser la porte A ou D pour une entrée plus rapide."
+                };
+            }
+            return {
+                en: text,
+                es: "[Español] " + text + " (Traducido por IA)",
+                fr: "[Français] " + text + " (Traduit par IA)"
+            };
+        }
+
+        // Test Framework
+        const resultsContainer = document.getElementById('testResults');
+
+        function runTestSuite(name, assertions) {
+            let suitePasses = true;
+            const assertionsHtml = assertions.map(a => {
+                const isPass = a.condition();
+                if (!isPass) suitePasses = false;
+                return `
+                    <li class="assertion-item">
+                        <span class="icon ${isPass ? 'icon-pass' : 'icon-fail'}">${isPass ? '✔' : '✘'}</span>
+                        <span>${a.message}</span>
+                    </li>
+                `;
+            }).join('');
+
+            const suiteHtml = `
+                <div class="test-card">
+                    <div class="test-header">
+                        <span class="test-title">${name}</span>
+                        <span class="test-badge ${suitePasses ? 'badge-pass' : 'badge-fail'}">${suitePasses ? 'PASS' : 'FAIL'}</span>
+                    </div>
+                    <ul class="assertion-list">
+                        ${assertionsHtml}
+                    </ul>
+                </div>
+            `;
+            resultsContainer.innerHTML += suiteHtml;
+        }
+
+        // Run Tests
+        window.onload = () => {
+            // 1. Coordinates Tests
+            runTestSuite("Stadium Coordinates Verification", [
+                {
+                    message: "Gate A node coordinates are correct",
+                    condition: () => nodeCoordinates['gate-a'].x === 400 && nodeCoordinates['gate-a'].y === 50
+                },
+                {
+                    message: "Gate D accessibility node coordinates are correct",
+                    condition: () => nodeCoordinates['gate-d'].x === 50 && nodeCoordinates['gate-d'].y === 300
+                },
+                {
+                    message: "All 12 coordinate nodes are declared",
+                    condition: () => Object.keys(nodeCoordinates).length === 12
+                }
+            ]);
+
+            // 2. Eco Audit Simulator Tests
+            runTestSuite("Sustainability Audit Logic", [
+                {
+                    message: "Short descriptions (< 8 chars) are rejected as invalid",
+                    condition: () => simulateEcoAudit('recycling', 'short').verified === false
+                },
+                {
+                    message: "Recycling action returns correct CO2 and XP coefficients",
+                    condition: () => {
+                        const res = simulateEcoAudit('recycling', 'Recycled plastic bottles near Gate A');
+                        return res.verified === true && res.savedCo2 === 0.4 && res.xpGained === 60;
+                    }
+                },
+                {
+                    message: "Public transport action grants 100 XP",
+                    condition: () => {
+                        const res = simulateEcoAudit('transport', 'Took the train from downtown station');
+                        return res.verified === true && res.xpGained === 100;
+                    }
+                }
+            ]);
+
+            // 3. Incident Commander Tests
+            runTestSuite("GenAI Incident Commander Classification", [
+                {
+                    message: "Spills are classified as MODERATE severity and Safety category",
+                    condition: () => {
+                        const res = simulateIncidentCommander("There is a large water spill on Section 102");
+                        return res.severity === "MODERATE" && res.category === "Maintenance & Safety";
+                    }
+                },
+                {
+                    message: "Fights/Crowding are classified as CRITICAL severity and Security category",
+                    condition: () => {
+                        const res = simulateIncidentCommander("Crowd bottleneck near Gate B turnstile 4");
+                        return res.severity === "CRITICAL" && res.category === "Security & Crowd Control";
+                    }
+                },
+                {
+                    message: "Medical emergencies are classified as CRITICAL severity and Medical category",
+                    condition: () => {
+                        const res = simulateIncidentCommander("A fan has fainted and needs medical support immediately");
+                        return res.severity === "CRITICAL" && res.category === "Medical Emergency";
+                    }
+                }
+            ]);
+
+            // 4. Multilingual Translation Tests
+            runTestSuite("Broadcaster Translation Module", [
+                {
+                    message: "Busy Gate B notification translates correctly to Spanish and French",
+                    condition: () => {
+                        const res = simulateTranslation("Gate B is busy. Please use Gate A or D.");
+                        return res.es.includes("Puerta B") && res.fr.includes("porte B");
+                    }
+                },
+                {
+                    message: "Fallback translation appends standard brackets",
+                    condition: () => {
+                        const res = simulateTranslation("Emergency exit clear.");
+                        return res.es === "[Español] Emergency exit clear. (Traducido por IA)";
+                    }
+                }
+            ]);
+        };
+    </script>
+</body>
+</html>

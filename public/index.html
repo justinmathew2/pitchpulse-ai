@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitchPulse AI - FIFA World Cup 2026 Stadium Companion</title>
+    <meta name="description" content="Generative AI-enabled stadium operations and fan experience hub for the FIFA World Cup 2026.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- App Container -->
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" aria-label="Main Navigation">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i data-lucide="activity" class="pulse-icon"></i>
+                    <span>PitchPulse <span class="highlight">AI</span></span>
+                </div>
+                <span class="badge-worldcup">WC 2026</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">Fan Experience</div>
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="assistant">
+                    <i data-lucide="bot"></i>
+                    <span>GenAI Assistant</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="navigation">
+                    <i data-lucide="map"></i>
+                    <span>Stadium Map & Navigation</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="sustainability">
+                    <i data-lucide="leaf"></i>
+                    <span>Sustainability Hub</span>
+                </a>
+
+                <div class="nav-section">Operations & Staff</div>
+                <a href="#" class="nav-item" data-tab="operations">
+                    <i data-lucide="terminal"></i>
+                    <span>Control Center</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-settings" id="openSettingsBtn" aria-label="Settings">
+                    <i data-lucide="settings"></i>
+                    <span>System Settings</span>
+                </button>
+                <div class="user-status">
+                    <div class="status-indicator online"></div>
+                    <span id="activeProjectDisplay">DeployFestHack</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 id="pageTitle">Stadium Dashboard</h1>
+                    <p class="text-secondary" id="pageSubTitle">Real-time crowd flows and wait-times</p>
+                </div>
+                <div class="top-bar-right">
+                    <!-- Live Broadcaster Ticker -->
+                    <div class="live-broadcast-ticker" id="broadcastTicker">
+                        <i data-lucide="megaphone" class="ticker-icon"></i>
+                        <span id="tickerContent" class="ticker-text">Welcome to MetLife Stadium! Enjoy the matches!</span>
+                    </div>
+                    <!-- Mode Switcher (Fan vs Staff shortcut) -->
+                    <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle light/dark mode">
+                        <i data-lucide="sun"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- TAB CONTENT: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-pane active">
+                <!-- Overview Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper blue">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Occupancy</span>
+                            <h3 class="stat-value" id="occupancyVal">82,450</h3>
+                            <span class="stat-trend positive"><i data-lucide="trending-up"></i> 94% Capacity</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper green">
+                            <i data-lucide="log-in"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Gate Entry Rate</span>
+                            <h3 class="stat-value" id="entryRateVal">450 <span class="unit">/min</span></h3>
+                            <span class="stat-trend neutral">Normal flow</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper orange">
+                            <i data-lucide="leaf"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Carbon Saved Today</span>
+                            <h3 class="stat-value" id="carbonSavedVal">3,240 <span class="unit">kg</span></h3>
+                            <span class="stat-trend positive"><i data-lucide="arrow-up-right"></i> Target +12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper red">
+                            <i data-lucide="shield-alert"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Active Operational Alerts</span>
+                            <h3 class="stat-value" id="activeAlertsVal">2</h3>
+                            <span class="stat-trend negative">Staff dispatched</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crowd Management & Queue Times -->
+                <div class="content-row">
+                    <div class="content-col col-8">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="timer"></i> Real-time Queue & Gate Estimator</h3>
+                                <button class="btn-small" id="refreshWaitTimesBtn"><i data-lucide="refresh-cw"></i> Refresh</button>
+                            </div>
+                            <div class="panel-body">
+                                <div class="queue-list">
+                                    <div class="queue-item">
+                                        <div class="queue-meta">
+                                            <span class="queue-name">Gate A (Main Entry)</span>
+                                            <span class="queue-metric text-success">Low Wait</span>
+                                        </div>
+                                        <div class="queue-bar-wrapper">
+                                            <div class="queue-bar green" style="width: 25%"></div>
+                                        </div>
+                                        <span class="queue-time">5 mins</span>
+                                    </div>
+                                    <div class="queue-item">
+                                        <div class="queue-meta">
+                                            <span class="queue-name">Gate B (North Gates)</span>
+                                            <span class="queue-metric text-warning">Moderate Wait</span>
+                                        </div>
+                                        <div class="queue-bar-wrapper">
+                                            <div class="queue-bar orange" style="width: 60%"></div>
+                                        </div>
+                                        <span class="queue-time">18 mins</span>
+                                    </div>
+                                    <div class="queue-item">
+                                        <div class="queue-meta">
+                                            <span class="queue-name">Gate C (South Plaza)</span>
+                                            <span class="queue-metric text-danger">Heavy Wait</span>
+                                        </div>
+                                        <div class="queue-bar-wrapper">
+                                            <div class="queue-bar red" style="width: 90%"></div>
+                                        </div>
+                                        <span class="queue-time">35 mins</span>
+                                    </div>
+                                    <div class="queue-item">
+                                        <div class="queue-meta">
+                                            <span class="queue-name">Section 104 - Restrooms (Male/Female)</span>
+                                            <span class="queue-metric text-success">Short Queue</span>
+                                        </div>
+                                        <div class="queue-bar-wrapper">
+                                            <div class="queue-bar green" style="width: 15%"></div>
+                                        </div>
+                                        <span class="queue-time">2 mins</span>
+                                    </div>
+                                    <div class="queue-item">
+                                        <div class="queue-meta">
+                                            <span class="queue-name">Section 122 - Coca-Cola Concessions</span>
+                                            <span class="queue-metric text-warning">Moderate Queue</span>
+                                        </div>
+                                        <div class="queue-bar-wrapper">
+                                            <div class="queue-bar orange" style="width: 55%"></div>
+                                        </div>
+                                        <span class="queue-time">12 mins</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-col col-4">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="compass"></i> Quick Navigation Help</h3>
+                            </div>
+                            <div class="panel-body text-center">
+                                <div class="quick-nav-card">
+                                    <p class="text-secondary">Scan your digital ticket or type your seat location to locate the fastest gate entry route.</p>
+                                    <div class="input-group">
+                                        <input type="text" placeholder="e.g. Block 114, Row F" id="quickSeatInput">
+                                        <button class="btn-primary" id="quickFindBtn">Find</button>
+                                    </div>
+                                    <div class="divider">OR</div>
+                                    <button class="btn-secondary w-full" id="goToBuddyBtn"><i data-lucide="bot"></i> Chat with Stadium Buddy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: ASSISTANT (CHAT) -->
+            <section id="tab-assistant" class="tab-pane">
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div class="chat-sidebar-header">
+                            <h3><i data-lucide="bot"></i> AI Stadium Buddy</h3>
+                            <p class="text-xs text-secondary">Multilingual FIFA Assist</p>
+                        </div>
+                        <div class="chat-options">
+                            <label for="chatLanguage">Preferred Language</label>
+                            <select id="chatLanguage" class="form-control select-lang">
+                                <option value="en">English (US/UK)</option>
+                                <option value="es">Español (Spanish)</option>
+                                <option value="fr">Français (French)</option>
+                                <option value="de">Deutsch (German)</option>
+                                <option value="pt">Português (Portuguese)</option>
+                            </select>
+                            
+                            <div class="voice-controls">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="voiceSynthesisToggle" checked>
+                                    <span>Enable Voice Responses (TTS)</span>
+                                </label>
+                            </div>
+
+                            <div class="quick-prompts">
+                                <span class="quick-prompt-title">Common Questions:</span>
+                                <button class="btn-outline quick-prompt-btn">How do I get to public transit from Gate A?</button>
+                                <button class="btn-outline quick-prompt-btn">Are there wheelchair-accessible restrooms near Section 102?</button>
+                                <button class="btn-outline quick-prompt-btn">Where can I recycle PET bottles?</button>
+                                <button class="btn-outline quick-prompt-btn">What are the food options in the East Concourse?</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-main">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message system-msg">
+                                <div class="message-bubble">
+                                    <strong>Stadium Buddy:</strong> Welcome! I am your GenAI Assistant for the FIFA World Cup 2026. Ask me anything about stadium directions, transport, accessibility, food, or green incentives!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <div class="input-bar">
+                                <button class="btn-voice-input" id="voiceInputBtn" aria-label="Speech to text input">
+                                    <i data-lucide="mic" id="micIcon"></i>
+                                </button>
+                                <input type="text" id="chatInput" placeholder="Type your query here..." aria-label="Chat query">
+                                <button class="btn-send-message" id="sendMessageBtn" aria-label="Send message">
+                                    <i data-lucide="send"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: MAP & NAVIGATION -->
+            <section id="tab-navigation" class="tab-pane">
+                <div class="content-row">
+                    <div class="content-col col-8">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="map"></i> Stadium Visualizer</h3>
+                                <div class="map-legend">
+                                    <span class="legend-item"><span class="color-dot bg-gate"></span> Gates</span>
+                                    <span class="legend-item"><span class="color-dot bg-seat"></span> Seats</span>
+                                    <span class="legend-item"><span class="color-dot bg-concession"></span> Concessions</span>
+                                    <span class="legend-item"><span class="color-dot bg-ada"></span> ADA Path</span>
+                                    <span class="legend-item"><span class="color-dot bg-recycle"></span> Recycling</span>
+                                </div>
+                            </div>
+                            <div class="panel-body text-center relative">
+                                <!-- Interactive SVG Stadium Map -->
+                                <svg id="stadiumSvg" viewBox="0 0 800 600" class="stadium-svg" aria-label="Stadium map visualizer">
+                                    <!-- Background -->
+                                    <rect width="800" height="600" fill="#0b0e14" rx="16"></rect>
+                                    
+                                    <!-- Inner Pitch -->
+                                    <rect x="300" y="200" width="200" height="200" fill="#0f2b1d" stroke="#1d5c3f" stroke-width="3" rx="10"></rect>
+                                    <line x1="400" y1="200" x2="400" y2="400" stroke="#1d5c3f" stroke-width="2"></line>
+                                    <circle cx="400" cy="300" r="40" fill="none" stroke="#1d5c3f" stroke-width="2"></circle>
+                                    
+                                    <!-- Seating Blocks -->
+                                    <!-- North Block 101 -->
+                                    <path id="block-101" d="M 280,120 L 520,120 L 480,180 L 320,180 Z" class="seat-block" data-name="North Blocks (101-102)"></path>
+                                    <!-- South Block 103 -->
+                                    <path id="block-103" d="M 280,480 L 520,480 L 480,420 L 320,420 Z" class="seat-block" data-name="South Blocks (103-104)"></path>
+                                    <!-- West Block 102 -->
+                                    <path id="block-102" d="M 120,220 L 120,380 L 180,350 L 180,250 Z" class="seat-block" data-name="West Blocks (102-ADA)"></path>
+                                    <!-- East Block 104 -->
+                                    <path id="block-104" d="M 680,220 L 680,380 L 620,350 L 620,250 Z" class="seat-block" data-name="East Blocks (104-Concessions)"></path>
+
+                                    <!-- Main Gates (Entry/Exit Points) -->
+                                    <circle id="gate-a" cx="400" cy="50" r="16" class="gate-node" data-name="Gate A (Main North)"></circle>
+                                    <text x="400" y="55" class="map-label">A</text>
+                                    
+                                    <circle id="gate-b" cx="750" cy="300" r="16" class="gate-node" data-name="Gate B (East Plaza)"></circle>
+                                    <text x="750" y="305" class="map-label">B</text>
+
+                                    <circle id="gate-c" cx="400" cy="550" r="16" class="gate-node" data-name="Gate C (South Transit)"></circle>
+                                    <text x="400" y="555" class="map-label">C</text>
+
+                                    <circle id="gate-d" cx="50" cy="300" r="16" class="gate-node" data-name="Gate D (West ADA)"></circle>
+                                    <text x="50" y="305" class="map-label">D</text>
+
+                                    <!-- Key Interest Nodes -->
+                                    <!-- Restrooms -->
+                                    <g id="node-restrooms" class="poi-node" data-name="Section 102 Restrooms">
+                                        <rect x="220" y="240" width="30" height="30" rx="5" fill="#4d2f8a"></rect>
+                                        <i data-lucide="wc" class="poi-icon" x="227" y="247"></i>
+                                    </g>
+                                    <!-- Food Concessions -->
+                                    <g id="node-concessions" class="poi-node" data-name="Section 104 Concessions">
+                                        <rect x="550" y="330" width="30" height="30" rx="5" fill="#a87f18"></rect>
+                                    </g>
+                                    <!-- First Aid -->
+                                    <g id="node-firstaid" class="poi-node" data-name="Section 101 First Aid (ADA Access)">
+                                        <rect x="220" y="330" width="30" height="30" rx="5" fill="#a31c1c"></rect>
+                                    </g>
+                                    <!-- Recycling/Eco Center -->
+                                    <g id="node-recycle" class="poi-node" data-name="Eco-Recycling Center">
+                                        <rect x="550" y="240" width="30" height="30" rx="5" fill="#188c52"></rect>
+                                    </g>
+
+                                    <!-- Dynamically Drawn Paths -->
+                                    <!-- Base standard connection pathways (hidden/opacity low) -->
+                                    <path id="path-a-101" d="M 400,66 L 400,120" class="map-path-base"></path>
+                                    <path id="path-d-102" d="M 66,300 L 120,300" class="map-path-base"></path>
+                                    <path id="path-b-104" d="M 734,300 L 680,300" class="map-path-base"></path>
+                                    <path id="path-c-103" d="M 400,534 L 400,480" class="map-path-base"></path>
+
+                                    <!-- ADA Elevator/Ramp Overlay Path -->
+                                    <path id="path-ada-ramp" d="M 66,300 L 150,300 L 150,250 L 220,250" class="map-path-base ada-path"></path>
+
+                                    <!-- Main active display path -->
+                                    <path id="activeNavigationPath" d="" class="map-path-active" stroke-linecap="round"></path>
+                                </svg>
+                                <div class="map-overlay-info" id="mapOverlayInfo">Click nodes or select inputs to generate routes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-col col-4">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="navigation"></i> Directives</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="routeStart">Starting Point</label>
+                                    <select id="routeStart" class="form-control">
+                                        <option value="gate-a">Gate A (Main North)</option>
+                                        <option value="gate-b">Gate B (East Plaza)</option>
+                                        <option value="gate-c">Gate C (South Transit)</option>
+                                        <option value="gate-d">Gate D (West ADA)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="routeEnd">Destination</label>
+                                    <select id="routeEnd" class="form-control">
+                                        <option value="block-101">North Blocks (101-102)</option>
+                                        <option value="block-102">West Blocks (102-ADA)</option>
+                                        <option value="block-103">South Blocks (103-104)</option>
+                                        <option value="block-104">East Blocks (104-Concessions)</option>
+                                        <option value="node-restrooms">Section 102 Restrooms</option>
+                                        <option value="node-concessions">Section 104 Concessions</option>
+                                        <option value="node-firstaid">Section 101 First Aid</option>
+                                        <option value="node-recycle">Eco-Recycling Center</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-2">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="accessibilityRouteToggle">
+                                        <span>Prioritize Accessibility Routes (ADA)</span>
+                                    </label>
+                                </div>
+
+                                <button class="btn-primary w-full mt-4" id="generateRouteBtn">
+                                    <i data-lucide="milestone"></i> Calculate Fast Route
+                                </button>
+                                
+                                <div class="divider"></div>
+
+                                <div class="route-details-panel hidden" id="routeDetailsPanel">
+                                    <h4>Route Directions</h4>
+                                    <div class="route-stats">
+                                        <span class="route-stat-item"><i data-lucide="clock"></i> Est: <strong id="routeEstTime">3 mins</strong></span>
+                                        <span class="route-stat-item"><i data-lucide="footprints"></i> Distance: <strong id="routeEstDist">220m</strong></span>
+                                    </div>
+                                    <ol class="route-steps" id="routeStepsList">
+                                        <li>Proceed through Gate A bag check.</li>
+                                        <li>Walk straight toward the North Concourse.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: SUSTAINABILITY -->
+            <section id="tab-sustainability" class="tab-pane">
+                <div class="content-row">
+                    <div class="content-col col-6">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="sparkles"></i> Log Eco Action & GenAI Audit</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form id="sustainabilityForm">
+                                    <div class="form-group">
+                                        <label for="actionType">Eco Action Category</label>
+                                        <select id="actionType" class="form-control">
+                                            <option value="recycling">Recycled Plastic / Aluminum Bottles</option>
+                                            <option value="transport">Arrived via Public Transport (Train/Bus)</option>
+                                            <option value="reusable">Brought Reusable Cup / Flask</option>
+                                            <option value="compost">Composted Organic Food Waste</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="actionDetail">Describe your action (GenAI will audit this detail)</label>
+                                        <textarea id="actionDetail" class="form-control" rows="3" placeholder="e.g. I recycled 3 plastic Coke bottles at the green bins near block 104, or I took the shuttle train from Penn Station instead of driving."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-primary w-full" id="logActionBtn">
+                                        <i data-lucide="leaf"></i> Validate & Log Action
+                                    </button>
+                                </form>
+
+                                <div class="divider"></div>
+                                <div class="green-audit-card hidden" id="greenAuditCard">
+                                    <div class="audit-header">
+                                        <i data-lucide="shield-check" class="text-success"></i>
+                                        <span>GenAI Verification Result</span>
+                                    </div>
+                                    <div class="audit-body">
+                                        <p id="auditAssessment">Recycling audited. Carbon impact calculated!</p>
+                                        <div class="eco-metrics">
+                                            <span class="eco-badge">CO2 Saved: <strong id="savedCo2Val">0.3 kg</strong></span>
+                                            <span class="eco-badge">XP Gained: <strong id="xpGainedVal">50 XP</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-col col-6">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="trophy"></i> Your Green Rewards & Stats</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="sustainability-summary">
+                                    <div class="level-progress-wrapper">
+                                        <div class="level-meta">
+                                            <span>Green Champion Level <strong id="userGreenLevel">1</strong></span>
+                                            <span id="userGreenXp">150 / 300 XP</span>
+                                        </div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar-fill" id="xpProgressBar" style="width: 50%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4 class="mt-4">Unlocked Badges</h4>
+                                <div class="badges-row" id="unlockedBadges">
+                                    <div class="badge-item earned" title="Earned by logging public transport arrival">
+                                        <i data-lucide="subway"></i>
+                                        <span>Transit Hero</span>
+                                    </div>
+                                    <div class="badge-item locked" id="badgeRecycler" title="Recycle 5 bottles to unlock">
+                                        <i data-lucide="recycle"></i>
+                                        <span>Eco Recycler</span>
+                                    </div>
+                                    <div class="badge-item locked" id="badgeConserve" title="Log reusable cup usage">
+                                        <i data-lucide="cup-soda"></i>
+                                        <span>Cup Savior</span>
+                                    </div>
+                                </div>
+
+                                <h4 class="mt-4">Available Reward Vouchers</h4>
+                                <div class="vouchers-list" id="vouchersList">
+                                    <div class="voucher-card disabled" id="voucherSoda">
+                                        <div class="voucher-info">
+                                            <h5>Free Refill (Reusable Cup)</h5>
+                                            <p class="text-xs text-secondary">Unlock at Level 2 (Requires 300 XP)</p>
+                                        </div>
+                                        <span class="voucher-value">FREE</span>
+                                    </div>
+                                    <div class="voucher-card disabled" id="voucherDiscount">
+                                        <div class="voucher-info">
+                                            <h5>15% Off Official Merchandise</h5>
+                                            <p class="text-xs text-secondary">Unlock at Level 3 (Requires 600 XP)</p>
+                                        </div>
+                                        <span class="voucher-value">-15%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: OPERATIONS COMMAND CENTER -->
+            <section id="tab-operations" class="tab-pane">
+                <!-- Operations Row -->
+                <div class="content-row">
+                    <!-- Right: Incident Logs & Dispatcher -->
+                    <div class="content-col col-6">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="alert-octagon"></i> Log New Operational Incident</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form id="incidentForm">
+                                    <div class="form-group">
+                                        <label for="incidentDescription">Incident Details (GenAI will classify and recommend dispatch)</label>
+                                        <textarea id="incidentDescription" class="form-control" rows="4" placeholder="e.g. Large soda spill near Row F, Section 102 causing slipping hazard. Or, Crowd bottleneck occurring at Gate B turnstile 4."></textarea>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="incidentLocation">Location</label>
+                                            <input type="text" id="incidentLocation" class="form-control" placeholder="e.g. Section 102 / Gate B">
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="reporterStaff">Reporting Staff</label>
+                                            <input type="text" id="reporterStaff" class="form-control" placeholder="Staff Name/ID" value="Supervisor J. Mathew">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn-primary w-full mt-3" id="logIncidentBtn">
+                                        <i data-lucide="shield-alert"></i> Submit Incident to GenAI Commander
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- GenAI Recommendation Panel -->
+                        <div class="panel mt-4 hidden" id="incidentAuditPanel">
+                            <div class="panel-header">
+                                <h3 class="panel-title text-warning"><i data-lucide="shield-check"></i> GenAI Dispatch Recommendation</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="incident-meta-badges">
+                                    <span class="badge badge-severity" id="recommendedSeverity">CRITICAL</span>
+                                    <span class="badge badge-category" id="recommendedCategory">Safety & Maintenance</span>
+                                </div>
+                                <div class="audit-recommendation-details mt-3">
+                                    <h5>Action Plan:</h5>
+                                    <p class="text-secondary" id="recommendedActionPlan">Dispatching Janitorial crew J-12 immediately with wet floor signs and cleanup gear. Placing warning broadcast on Section 102 local notification feeds.</p>
+                                    
+                                    <h5 class="mt-3">Draft Announcement for Field Staff:</h5>
+                                    <blockquote id="recommendedStaffText" class="staff-alert-draft">ALERT: Spill reported at Section 102. Cleaning units deploy.</blockquote>
+                                    
+                                    <button class="btn-secondary w-full mt-3" id="executeDispatchBtn">
+                                        <i data-lucide="check-circle"></i> Dispatch & Send Staff Alerts
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Left: Operational Intelligence Telemetry -->
+                    <div class="content-col col-6">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="gauge"></i> Active Operational Telemetry</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="telemetry-chart-container">
+                                    <canvas id="telemetryChart" height="220" style="max-height: 240px;"></canvas>
+                                </div>
+                                
+                                <h4 class="mt-4">Active Incidents Logs</h4>
+                                <div class="incident-log-list" id="activeIncidentsList">
+                                    <div class="incident-log-item status-resolved">
+                                        <div class="log-meta">
+                                            <span class="log-location">Gate B (Turnstile 3)</span>
+                                            <span class="log-time">10 mins ago</span>
+                                        </div>
+                                        <p class="log-desc">Turnstile 3 scanner lag. IT Support dispatched. Replaced sensor.</p>
+                                        <span class="log-tag">Resolved</span>
+                                    </div>
+                                    <div class="incident-log-item status-pending">
+                                        <div class="log-meta">
+                                            <span class="log-location">Section 104 Food Aisle</span>
+                                            <span class="log-time">2 mins ago</span>
+                                        </div>
+                                        <p class="log-desc">High crowd density at hotdog stand bottleneck. Marshalling volunteers.</p>
+                                        <span class="log-tag">Pending Dispatch</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Smart Announcement Broadcast -->
+                        <div class="panel mt-4">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="megaphone"></i> Multi-lingual Broadcast Director</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="broadcastRawText">Announcement (Draft in English)</label>
+                                    <input type="text" id="broadcastRawText" class="form-control" placeholder="e.g. Gate B is currently busy. Please use Gate A or D for faster entry.">
+                                </div>
+                                <button class="btn-primary w-full mt-2" id="translateBroadcastBtn">
+                                    <i data-lucide="globe"></i> GenAI Auto-Translate & Broadcast
+                                </button>
+                                
+                                <div class="translations-grid mt-3 hidden" id="broadcastTranslationsPanel">
+                                    <h5>Translations Sent to Display Screens:</h5>
+                                    <ul class="translation-list">
+                                        <li><strong>EN (English):</strong> <span id="transEn">Gate B is busy...</span></li>
+                                        <li><strong>ES (Spanish):</strong> <span id="transEs">La Puerta B está ocupada...</span></li>
+                                        <li><strong>FR (French):</strong> <span id="transFr">La porte B est occupée...</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="settingsModalTitle">PitchPulse Settings</h3>
+                <button class="btn-close-modal" id="closeSettingsBtn" aria-label="Close settings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="geminiApiKey">Gemini API Key (Optional)</label>
+                    <p class="text-xs text-secondary mb-2">Input your Gemini API key to activate real Generative AI responses. If blank, the app runs in full simulation mode.</p>
+                    <input type="password" id="geminiApiKey" class="form-control" placeholder="AIzaSy...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="geminiModel">Gemini Model Choice</label>
+                    <select id="geminiModel" class="form-control">
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Recommended - Speed)</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro (Reasoning)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="themeSelect">Theme Preset</label>
+                    <select id="themeSelect" class="form-control">
+                        <option value="dark">MetLife Dark Mode</option>
+                        <option value="light">Stadium Light Mode</option>
+                        <option value="neon">Cyberpunk Tournament</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-3">
+                    <button class="btn-primary w-full" id="saveSettingsBtn">Save Configuration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Utility Script for Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
