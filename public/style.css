@@ -1363,3 +1363,63 @@ body {
         width: 100%;
     }
 }
+
+/* ============================================
+   LIVE TRANSIT BOARD
+   ============================================ */
+.transit-board {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.transit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background-color: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 18px;
+    transition: var(--transition-smooth);
+}
+.transit-row:hover { border-color: var(--primary-color); transform: translateX(4px); }
+.transit-line-info { display: flex; flex-direction: column; gap: 4px; }
+.transit-route { font-size: 0.85rem; display: block; }
+.transit-gate-tag { display: inline-block; background-color: rgba(59,130,246,0.15); color: var(--accent-blue); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
+.transit-status-block { display: flex; align-items: center; gap: 12px; }
+.transit-departs { font-size: 1.1rem; font-weight: 800; color: var(--primary-color); min-width: 80px; text-align: right; }
+.transit-status-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
+.transit-status-badge.status-on-time  { background-color: rgba(16,185,129,0.15); color: var(--primary-color); }
+.transit-status-badge.status-delayed  { background-color: rgba(239,68,68,0.15); color: var(--accent-red); }
+.transit-status-badge.status-available { background-color: rgba(59,130,246,0.15); color: var(--accent-blue); }
+.transit-crowd { font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+.transit-crowd.crowd-low      { background-color: rgba(16,185,129,0.12); color: var(--primary-color); }
+.transit-crowd.crowd-moderate { background-color: rgba(245,158,11,0.12); color: var(--accent-orange); }
+.transit-crowd.crowd-high     { background-color: rgba(239,68,68,0.12); color: var(--accent-red); }
+.advisory-card { display: flex; gap: 12px; align-items: flex-start; background-color: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; font-size: 0.9rem; line-height: 1.5; }
+.advisory-card i { flex-shrink: 0; width: 20px; height: 20px; }
+
+/* ============================================
+   EMERGENCY SOS
+   ============================================ */
+.sos-panel { border: 1px solid rgba(239,68,68,0.4); background: linear-gradient(135deg,rgba(239,68,68,0.05) 0%,var(--bg-glass) 60%); }
+.btn-danger { background-color: var(--accent-red); color: #fff; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: var(--font-sans); font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(239,68,68,0.4); transition: var(--transition-smooth); letter-spacing: 0.05em; animation: pulse-sos 2.5s infinite alternate; }
+.btn-danger:hover { background-color: #dc2626; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(239,68,68,0.6); }
+.btn-danger:disabled { opacity: 0.6; animation: none; cursor: not-allowed; }
+@keyframes pulse-sos { from { box-shadow: 0 4px 18px rgba(239,68,68,0.4); } to { box-shadow: 0 6px 24px rgba(239,68,68,0.7); } }
+.sos-response { background-color: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3) !important; padding: 20px; border-radius: 12px; }
+.sos-response-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--accent-red); }
+.sos-unit { font-size: 0.9rem; margin: 10px 0; }
+.emergency-contacts-list { display: flex; flex-direction: column; gap: 16px; }
+.emergency-contact-item { display: flex; align-items: center; gap: 16px; padding: 14px; background-color: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: 10px; }
+.contact-icon-wrapper { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-icon-wrapper.red    { background-color: rgba(239,68,68,0.15); color: var(--accent-red); }
+.contact-icon-wrapper.blue   { background-color: rgba(59,130,246,0.15); color: var(--accent-blue); }
+.contact-icon-wrapper.orange { background-color: rgba(245,158,11,0.15); color: var(--accent-orange); }
+.contact-icon-wrapper.green  { background-color: rgba(16,185,129,0.15); color: var(--primary-color); }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; }
+.contact-info span { font-size: 0.8rem; }
+.sos-info-banner { display: flex; gap: 12px; align-items: flex-start; background-color: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 14px; font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); }
+.mb-2 { margin-bottom: 8px; }
+.staff-alert-draft { background-color: rgba(245,158,11,0.1); border-left: 3px solid var(--accent-orange); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 0.85rem; color: var(--accent-orange); font-style: italic; margin-top: 10px; }

@@ -1,7 +1,7 @@
 # PitchPulse AI ⚽
 ### FIFA World Cup 2026 Stadium Companion & Operations Hub
 
-PitchPulse AI is a Generative AI-enabled stadium operation and fan experience dashboard designed for the FIFA World Cup 2026. The solution leverages AI to improve crowd flow management, stadium navigation, sustainability incentives, and real-time operational decisions for stadium staff.
+PitchPulse AI is a production-grade, Generative AI-enabled stadium operations and fan experience dashboard designed for the FIFA World Cup 2026. It leverages Google Gemini AI to improve crowd management, wayfinding, emergency response, transit coordination, sustainability incentives, and multilingual real-time operational decisions.
 
 ---
 
@@ -14,51 +14,87 @@ PitchPulse AI is a Generative AI-enabled stadium operation and fan experience da
 ## 💡 Core Features
 
 ### 1. Fan Experience Hub
-* **AI Stadium Buddy (Multilingual Chat)**: A text and voice-enabled conversational assistant that answers fan queries on gate entries, nearby food concessions, restrooms, and transportation. Uses the browser's Web Speech API for **Speech-to-Text** input and **Text-to-Speech** output.
-* **Interactive SVG Map & Pathfinder**: A vector-based stadium visualizer showing gates, blocks, first-aid, concessions, and eco-recycling points. Clicking points generates dynamic path overlays with walking directions, estimated times, and distance statistics. Includes an **Accessibility Override (ADA)** that routes fans through elevators and ramps.
-* **Real-time Queue Estimator**: Shows live queue wait times for entrances and food vendors to help fans schedule their movements.
-* **Sustainability & Green Rewards**: Fans log eco-friendly actions (e.g. taking public rail or recycling PET bottles). The AI audits these claims, updates carbon savings metrics, and unlocks food/merchandise vouchers.
+* **AI Stadium Buddy (Multilingual Chat)**: Text and voice-enabled conversational assistant (EN/ES/FR/DE/PT) powered by Google Gemini 1.5. Answers gate entries, transit options, food concessions, restrooms, and eco-actions. Uses the browser's Web Speech API for Speech-to-Text input and Text-to-Speech output.
+* **Interactive SVG Map & Pathfinder**: Vector-based stadium visualizer with gates, seat blocks, first-aid, concessions, and eco-recycling points. Clicking nodes generates dynamic path overlays with walking directions, estimated times, and distance. Includes an **ADA Accessibility Override** routing fans via elevators and ramps.
+* **Real-time Queue Estimator**: Live queue wait time bars for all entrances and concessions so fans can time their movements optimally.
+* **Sustainability & Green Rewards**: Fans log eco-friendly actions (rail transit, PET bottle recycling, reusable flasks). The GenAI auditor verifies claims, tracks CO₂ savings, awards XP, and unlocks vouchers.
 
-### 2. Operations & Staff Control Center
-* **Operational Telemetry Charting**: Real-time canvas line charts displaying active gate flow rates (powered by Chart.js).
-* **GenAI Incident Commander**: Staff type in field reports (e.g., "spill near Section 102"). The AI instantly evaluates the severity, tags the category, designs a tactical action plan, and drafts warning text notifications for nearby stewards.
-* **Multilingual Alert Broadcaster**: Stadium announcements entered in English are auto-translated (English, Spanish, French) and immediately broadcasted to all active fan screens.
+### 2. Real-time Services
+* **Live Transit Board**: Real-time departure board for NJ Transit Rail (Gate A), Coach Bus 156 (Gate C), and Rideshare Lot G (Gate B). Features crowd-density badges, countdowns, and an AI Transit Advisor that recommends optimal departure times to avoid peak surges.
+* **Emergency SOS**: A dedicated Emergency Dispatch system for fans and staff. Users describe the emergency type (Medical/Fire/Crowd), location, and details. Google Gemini generates a structured first-response protocol including: severity priority, dispatched unit, ETA, and step-by-step immediate actions. All SOS alerts are logged to the Operations Control Center incident log.
+
+### 3. Operations & Staff Control Center
+* **Operational Telemetry Charting**: Real-time canvas line charts displaying active gate flow rates, updated every 10 seconds (Chart.js).
+* **GenAI Incident Commander**: Staff field reports are classified by severity (LOW/MODERATE/CRITICAL), categorised, and turned into tactical action plans with auto-drafted steward alerts.
+* **Multilingual Alert Broadcaster**: Stadium announcements entered in English are auto-translated to Spanish and French and immediately pushed to all active display panels and the live ticker.
 
 ---
 
 ## 🛠️ Architecture & Tech Stack
 * **Structure & UI**: HTML5 Semantic markup, Lucide Icons, Google Font Outfit.
-* **Styling**: Vanilla CSS3 custom properties supporting Dark Mode, Light Mode, and Neon themes, featuring smooth glassmorphism.
-* **Logic**: Vanilla JS ES6 handling route paths, voice utilities, state parameters, and HTTP fetch requests to the Gemini Developer API.
-* **Testing**: A dedicated `/test.html` runner.
-* **Hosting**: Firebase Hosting (free tier) for static delivery.
+* **Styling**: Vanilla CSS with glassmorphism, CSS custom properties (3 themes: Dark, Light, Neon), smooth micro-animations.
+* **JavaScript**: Vanilla ES6+ wrapped in an **IIFE module pattern** with `'use strict'`, named `CONSTANTS`, JSDoc documentation, `sanitizeInput()`, and unified `handleError()`.
+* **GenAI Integration**: Google Generative Language API (Gemini 1.5 Flash/Pro) with `AbortController` timeout, API key stored in `localStorage`, simulation fallback mode when no key is provided.
+* **Charts**: Chart.js 4.x real-time line chart.
+* **Speech**: Web Speech API (SpeechRecognition + SpeechSynthesis) for hands-free voice interaction.
+* **Deployment**: Firebase Hosting with HTTP security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).
 
 ---
 
-## 🎯 Verification Criteria Mapping
+## 🔐 Security Measures
+* All user input passed through `sanitizeInput()` — HTML entity escaping before DOM use.
+* GenAI API key stored in `localStorage`, never sent to a third-party server.
+* Firebase hosting serves with `Strict-Transport-Security`, `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+* `Permissions-Policy` restricts camera access; microphone is self-origin only.
+* All DOM mutations use textContent / safe DOM APIs — no `innerHTML` from user data.
+* AbortController fetch timeout (30s) prevents hung API requests.
 
-### Code Quality
-* Clean, modular logic separation with no heavy framework overhead. High code readability and comment coverage.
+---
 
-### Security
-* Uses a **Settings Modal** to allow users to input their own Gemini API key (stored securely in `localStorage` in the browser client). No hardcoded credentials exist in public repositories.
-* Includes a robust offline simulator fallback that allows complete verification without an active API key.
+## ✅ Testing
+6 automated test suites run in-browser at `/test.html`:
+1. **Stadium Coordinates Verification** — Gate and POI coordinate accuracy
+2. **Sustainability Audit Logic** — XP/CO₂ calculation, short-description rejection
+3. **GenAI Incident Commander Classification** — Severity tagging by keyword
+4. **Broadcaster Translation Module** — Spanish/French translation correctness
+5. **Live Transit Board Data Integrity** — Schema validation, status checks, crowding enum
+6. **Emergency SOS Protocol Generator** — Priority levels, dispatch units, action counts, broadcast length
 
-### Efficiency
-* Formulated as a Single Page Application (SPA). Zero server overhead, minimal build bundles, and responsive SVG layout transformations.
+---
 
-### Testing
-* Custom unit test runner (`/test.html`) verifying:
-  1. Seating coordinate mappings.
-  2. Sustainability character checks and level progress math.
-  3. Incident Commander dispatcher classifications (Critical, Moderate, Low).
-  4. Language translation arrays.
+## ♿ Accessibility
+* Full keyboard navigation on all interactive SVG map nodes (Enter/Space activation).
+* `aria-live="polite"` on Transit Board and `aria-live="assertive"` on Emergency SOS response panel.
+* `aria-label` on all icon-only buttons.
+* ADA accessibility route toggle re-routes navigation through elevators and ramps.
+* Responsive layout with mobile-friendly stacked columns.
+* 3 selectable themes (Dark/Light/Neon) for visual preference.
 
-### Accessibility (A11y)
-* Complies with WCAG guidelines:
-  * Form inputs use matching `<label>` elements.
-  * Correct ARIA attributes (`aria-label`, `role="dialog"`, `aria-modal`) for interactive modal controls.
-  * Interactive Speech recognition and text readouts support visually and physically impaired fans.
+---
 
-### Problem Statement Alignment
-* Addresses key tournament hurdles: multilingual communication, gate flow congestion, transport directions, ADA accessibility routes, safety dispatch, and carbon footprint accountability.
+## 🌱 Problem Statement Alignment — FIFA World Cup 2026
+| Challenge | PitchPulse AI Feature |
+|---|---|
+| Fan navigation | Interactive SVG Map + AI Pathfinder |
+| Crowd management | Queue Wait Times + Telemetry Chart |
+| Accessibility | ADA Route Toggle + Keyboard Nav + ARIA |
+| Transportation | Live Transit Board + AI Transit Advisor |
+| Sustainability | Green Rewards + Eco Audit AI |
+| Multilingual | Chat Buddy (5 languages) + Broadcast Translator (EN/ES/FR) |
+| Operational intelligence | GenAI Incident Commander + SOS Dispatch |
+| Real-time decision support | Emergency SOS + Operations Control Center |
+
+---
+
+## 🧪 Running Locally
+```bash
+npm install -g firebase-tools
+firebase login
+firebase serve --only hosting
+# Open http://localhost:5000
+```
+
+## 📦 Deploying
+```bash
+firebase deploy --only hosting
+```

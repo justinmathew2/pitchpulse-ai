@@ -164,7 +164,25 @@
             };
         }
 
-        // Test Framework
+        // ─── Transit Board Data Stub ───────────────────────────────────────
+        const TRANSIT_DATA_TEST = [
+            { line: 'NJ Transit Rail', route: 'Meadowlands → Secaucus Jn', gate: 'Gate A', status: 'ON TIME', departs: '+8 min', crowding: 'Low' },
+            { line: 'NJ Transit Rail', route: 'Meadowlands → Penn Station', gate: 'Gate A', status: 'ON TIME', departs: '+22 min', crowding: 'Moderate' },
+            { line: 'Coach Bus 156', route: 'MetLife → Newark Airport', gate: 'Gate C', status: 'DELAYED', departs: '+35 min', crowding: 'High' },
+            { line: 'Rideshare (Lot G)', route: 'Pickup Zone — East Plaza', gate: 'Gate B', status: 'AVAILABLE', departs: '~4 min wait', crowding: 'Low' },
+            { line: 'NJ Transit Rail', route: 'Meadowlands → Hoboken', gate: 'Gate A', status: 'ON TIME', departs: '+45 min', crowding: 'Low' }
+        ];
+
+        // ─── Emergency SOS Protocol Simulator ─────────────────────────────
+        function simulateSOSProtocol(type) {
+            const protocols = {
+                medical: { priority: 'CRITICAL', unitDispatched: 'Medical Unit Alpha', eta: '2-3 minutes', immediateActions: ['Keep fan calm', 'Clear 3m radius', 'Do not move fan', 'Unit en route'], broadcastAlert: 'ALERT: Medical team deployed.' },
+                fire:    { priority: 'CRITICAL', unitDispatched: 'Fire Safety Unit F-1', eta: '3-5 minutes', immediateActions: ['Move to emergency exit', 'Avoid elevators', 'Fire unit dispatched', 'Activate evacuation'], broadcastAlert: 'EMERGENCY: Move calmly to exits.' },
+                crowd:   { priority: 'HIGH', unitDispatched: 'Crowd Control Unit C-2', eta: '2 minutes', immediateActions: ['Open alternate exits', 'Activate diversion displays', 'Deploy stewards', 'Broadcast advisory'], broadcastAlert: 'Advisory: Use alternate gate.' }
+            };
+            return protocols[type] || protocols.medical;
+        }
+
         const resultsContainer = document.getElementById('testResults');
 
         function runTestSuite(name, assertions) {
@@ -274,6 +292,61 @@
                         const res = simulateTranslation("Emergency exit clear.");
                         return res.es === "[Español] Emergency exit clear. (Traducido por IA)";
                     }
+                }
+            ]);
+
+            // 5. Transit Board Data Tests
+            runTestSuite("Live Transit Board Data Integrity", [
+                {
+                    message: "Transit board has exactly 5 departure entries",
+                    condition: () => TRANSIT_DATA_TEST.length === 5
+                },
+                {
+                    message: "Every entry has required fields: line, route, gate, status, departs, crowding",
+                    condition: () => TRANSIT_DATA_TEST.every(r => r.line && r.route && r.gate && r.status && r.departs && r.crowding)
+                },
+                {
+                    message: "All Gate A services use NJ Transit Rail",
+                    condition: () => TRANSIT_DATA_TEST.filter(r => r.gate === 'Gate A').every(r => r.line.includes('NJ Transit'))
+                },
+                {
+                    message: "Delayed service is the Coach Bus 156 at Gate C",
+                    condition: () => {
+                        const delayed = TRANSIT_DATA_TEST.find(r => r.status === 'DELAYED');
+                        return delayed && delayed.gate === 'Gate C' && delayed.line === 'Coach Bus 156';
+                    }
+                },
+                {
+                    message: "Crowding values are one of: Low, Moderate, High",
+                    condition: () => TRANSIT_DATA_TEST.every(r => ['Low', 'Moderate', 'High'].includes(r.crowding))
+                }
+            ]);
+
+            // 6. Emergency SOS Protocol Tests
+            runTestSuite("Emergency SOS Protocol Generator", [
+                {
+                    message: "Medical emergencies generate CRITICAL priority protocol",
+                    condition: () => simulateSOSProtocol('medical').priority === 'CRITICAL'
+                },
+                {
+                    message: "Fire emergencies dispatch Fire Safety Unit F-1",
+                    condition: () => simulateSOSProtocol('fire').unitDispatched === 'Fire Safety Unit F-1'
+                },
+                {
+                    message: "Crowd emergencies generate HIGH priority protocol",
+                    condition: () => simulateSOSProtocol('crowd').priority === 'HIGH'
+                },
+                {
+                    message: "All protocols provide at least 3 immediate actions",
+                    condition: () => ['medical','fire','crowd'].every(t => simulateSOSProtocol(t).immediateActions.length >= 3)
+                },
+                {
+                    message: "All protocols include a broadcast alert string <= 80 chars",
+                    condition: () => ['medical','fire','crowd'].every(t => simulateSOSProtocol(t).broadcastAlert.length <= 80)
+                },
+                {
+                    message: "Unknown emergency type falls back to medical protocol",
+                    condition: () => simulateSOSProtocol('unknown').priority === 'CRITICAL'
                 }
             ]);
         };

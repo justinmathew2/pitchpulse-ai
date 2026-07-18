@@ -49,6 +49,16 @@
                     <span>Sustainability Hub</span>
                 </a>
 
+                <div class="nav-section">Real-time Services</div>
+                <a href="#" class="nav-item" data-tab="transit">
+                    <i data-lucide="train"></i>
+                    <span>Live Transit Board</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="emergency">
+                    <i data-lucide="siren"></i>
+                    <span>Emergency SOS</span>
+                </a>
+
                 <div class="nav-section">Operations & Staff</div>
                 <a href="#" class="nav-item" data-tab="operations">
                     <i data-lucide="terminal"></i>
@@ -516,6 +526,125 @@
                                         </div>
                                         <span class="voucher-value">-15%</span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: LIVE TRANSIT BOARD -->
+            <section id="tab-transit" class="tab-pane">
+                <div class="content-row">
+                    <div class="content-col col-8">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="train"></i> Real-time Departure Board</h3>
+                                <span class="badge badge-category">Live Updates</span>
+                            </div>
+                            <div class="panel-body">
+                                <div id="transitBoardContainer" class="transit-board" aria-live="polite" aria-label="Live transit departures"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-col col-4">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="bot"></i> AI Transit Advisor</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="transit-advisory">
+                                    <div class="advisory-card">
+                                        <i data-lucide="sparkles" class="text-success"></i>
+                                        <p><strong>Smart Advisory:</strong> Based on current crowd density at Gate A, we recommend taking the <strong>17:45 NJ Transit Rail</strong> to avoid peak-hour congestion. Estimated 22% fewer passengers vs. 18:00 service.</p>
+                                    </div>
+                                    <div class="advisory-card mt-3">
+                                        <i data-lucide="alert-triangle" class="text-warning"></i>
+                                        <p><strong>Crowd Alert:</strong> Coach Bus 156 is currently delayed. Consider NJ Transit Rail as an alternative from Gate A for faster transit to Newark.</p>
+                                    </div>
+                                    <button class="btn-primary w-full mt-4" id="goToBuddyBtnTransit"><i data-lucide="bot"></i> Ask AI About Transport</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: EMERGENCY SOS -->
+            <section id="tab-emergency" class="tab-pane">
+                <div class="content-row">
+                    <div class="content-col col-6">
+                        <div class="panel sos-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title text-danger"><i data-lucide="siren"></i> Emergency SOS Alert</h3>
+                                <span class="badge badge-severity critical">DIRECT DISPATCH</span>
+                            </div>
+                            <div class="panel-body">
+                                <p class="text-secondary mb-2">Use this form to report a life-threatening, safety or security emergency. The GenAI Commander will instantly generate a first-response protocol and dispatch the nearest unit.</p>
+                                <form id="emergencySOSForm">
+                                    <div class="form-group">
+                                        <label for="sosType">Emergency Type</label>
+                                        <select id="sosType" class="form-control" required>
+                                            <option value="medical">🚑 Medical Emergency (Injury, Cardiac, Fainting)</option>
+                                            <option value="fire">🔥 Fire or Hazardous Material</option>
+                                            <option value="crowd">🚨 Crowd Crush / Safety Threat</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sosLocation">Your Exact Location</label>
+                                        <input type="text" id="sosLocation" class="form-control" placeholder="e.g. Section 102, Row F, Seat 14" required aria-required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sosDetails">Additional Details (Optional)</label>
+                                        <textarea id="sosDetails" class="form-control" rows="2" placeholder="e.g. Elderly male, unresponsive, no visible injuries."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-danger w-full mt-3" id="sosSubmitBtn" aria-label="Send emergency SOS">
+                                        <i data-lucide="alert-octagon"></i> SEND EMERGENCY SOS
+                                    </button>
+                                </form>
+                                <div class="panel mt-4 hidden sos-response" id="sosResponsePanel" aria-live="assertive"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-col col-6">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="phone"></i> Emergency Contacts & Resources</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="emergency-contacts-list">
+                                    <div class="emergency-contact-item">
+                                        <div class="contact-icon-wrapper red"><i data-lucide="cross"></i></div>
+                                        <div class="contact-info">
+                                            <strong>Medical First Aid (Red Cross)</strong>
+                                            <span class="text-secondary">Sections 101, 103 — Response &lt; 3 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="emergency-contact-item">
+                                        <div class="contact-icon-wrapper blue"><i data-lucide="shield"></i></div>
+                                        <div class="contact-info">
+                                            <strong>Security Control Room</strong>
+                                            <span class="text-secondary">24/7 — Nearest: Gate D Booth</span>
+                                        </div>
+                                    </div>
+                                    <div class="emergency-contact-item">
+                                        <div class="contact-icon-wrapper orange"><i data-lucide="flame"></i></div>
+                                        <div class="contact-info">
+                                            <strong>Fire Safety Team (F-1)</strong>
+                                            <span class="text-secondary">Equipment: North & South Concourse</span>
+                                        </div>
+                                    </div>
+                                    <div class="emergency-contact-item">
+                                        <div class="contact-icon-wrapper green"><i data-lucide="info"></i></div>
+                                        <div class="contact-info">
+                                            <strong>General Information Desk</strong>
+                                            <span class="text-secondary">Gate A Lobby — Fan Assistance Hub</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sos-info-banner mt-4">
+                                    <i data-lucide="heart-pulse" class="text-danger"></i>
+                                    <p>All emergency SOS alerts are automatically routed to stadium operations staff and logged in the Control Center.</p>
                                 </div>
                             </div>
                         </div>
