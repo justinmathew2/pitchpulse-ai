@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PitchPulse AI - FIFA World Cup 2026 Stadium Companion</title>
     <meta name="description" content="Generative AI-enabled stadium operations and fan experience hub for the FIFA World Cup 2026.">
+    
+    <!-- Security: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://generativelanguage.googleapis.com;">
+
     <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +30,7 @@
                 <span class="badge-worldcup">WC 2026</span>
             </div>
 
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Sections">
                 <div class="nav-section">Fan Experience</div>
                 <a href="#" class="nav-item active" data-tab="dashboard">
                     <i data-lucide="layout-dashboard"></i>
@@ -76,7 +80,7 @@
                     <!-- Live Broadcaster Ticker -->
                     <div class="live-broadcast-ticker" id="broadcastTicker">
                         <i data-lucide="megaphone" class="ticker-icon"></i>
-                        <span id="tickerContent" class="ticker-text">Welcome to MetLife Stadium! Enjoy the matches!</span>
+                        <span id="tickerContent" class="ticker-text" aria-live="polite">Welcome to MetLife Stadium! Enjoy the matches!</span>
                     </div>
                     <!-- Mode Switcher (Fan vs Staff shortcut) -->
                     <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle light/dark mode">
@@ -251,7 +255,7 @@
                         </div>
                     </div>
                     <div class="chat-main">
-                        <div class="chat-messages" id="chatMessages">
+                        <div class="chat-messages" id="chatMessages" aria-live="polite">
                             <div class="message system-msg">
                                 <div class="message-bubble">
                                     <strong>Stadium Buddy:</strong> Welcome! I am your GenAI Assistant for the FIFA World Cup 2026. Ask me anything about stadium directions, transport, accessibility, food, or green incentives!
@@ -301,60 +305,60 @@
                                     
                                     <!-- Seating Blocks -->
                                     <!-- North Block 101 -->
-                                    <path id="block-101" d="M 280,120 L 520,120 L 480,180 L 320,180 Z" class="seat-block" data-name="North Blocks (101-102)"></path>
+                                    <path id="block-101" d="M 280,120 L 520,120 L 480,180 L 320,180 Z" class="seat-block" data-name="North Blocks (101-102)" tabindex="0" aria-label="Seating block North 101 to 102"></path>
                                     <!-- South Block 103 -->
-                                    <path id="block-103" d="M 280,480 L 520,480 L 480,420 L 320,420 Z" class="seat-block" data-name="South Blocks (103-104)"></path>
+                                    <path id="block-103" d="M 280,480 L 520,480 L 480,420 L 320,420 Z" class="seat-block" data-name="South Blocks (103-104)" tabindex="0" aria-label="Seating block South 103 to 104"></path>
                                     <!-- West Block 102 -->
-                                    <path id="block-102" d="M 120,220 L 120,380 L 180,350 L 180,250 Z" class="seat-block" data-name="West Blocks (102-ADA)"></path>
+                                    <path id="block-102" d="M 120,220 L 120,380 L 180,350 L 180,250 Z" class="seat-block" data-name="West Blocks (102-ADA)" tabindex="0" aria-label="Seating block West 102 accessibility platforms"></path>
                                     <!-- East Block 104 -->
-                                    <path id="block-104" d="M 680,220 L 680,380 L 620,350 L 620,250 Z" class="seat-block" data-name="East Blocks (104-Concessions)"></path>
+                                    <path id="block-104" d="M 680,220 L 680,380 L 620,350 L 620,250 Z" class="seat-block" data-name="East Blocks (104-Concessions)" tabindex="0" aria-label="Seating block East 104 concessions sector"></path>
 
                                     <!-- Main Gates (Entry/Exit Points) -->
-                                    <circle id="gate-a" cx="400" cy="50" r="16" class="gate-node" data-name="Gate A (Main North)"></circle>
+                                    <circle id="gate-a" cx="400" cy="50" r="16" class="gate-node" data-name="Gate A (Main North)" tabindex="0" aria-label="Gate A Main North Entry"></circle>
                                     <text x="400" y="55" class="map-label">A</text>
                                     
-                                    <circle id="gate-b" cx="750" cy="300" r="16" class="gate-node" data-name="Gate B (East Plaza)"></circle>
+                                    <circle id="gate-b" cx="750" cy="300" r="16" class="gate-node" data-name="Gate B (East Plaza)" tabindex="0" aria-label="Gate B East Plaza Entrance"></circle>
                                     <text x="750" y="305" class="map-label">B</text>
 
-                                    <circle id="gate-c" cx="400" cy="550" r="16" class="gate-node" data-name="Gate C (South Transit)"></circle>
+                                    <circle id="gate-c" cx="400" cy="550" r="16" class="gate-node" data-name="Gate C (South Transit)" tabindex="0" aria-label="Gate C South Transit Terminus"></circle>
                                     <text x="400" y="555" class="map-label">C</text>
 
-                                    <circle id="gate-d" cx="50" cy="300" r="16" class="gate-node" data-name="Gate D (West ADA)"></circle>
+                                    <circle id="gate-d" cx="50" cy="300" r="16" class="gate-node" data-name="Gate D (West ADA)" tabindex="0" aria-label="Gate D West ADA elevator access"></circle>
                                     <text x="50" y="305" class="map-label">D</text>
 
                                     <!-- Key Interest Nodes -->
                                     <!-- Restrooms -->
-                                    <g id="node-restrooms" class="poi-node" data-name="Section 102 Restrooms">
+                                    <g id="node-restrooms" class="poi-node" data-name="Section 102 Restrooms" tabindex="0" aria-label="Restrooms section 102">
                                         <rect x="220" y="240" width="30" height="30" rx="5" fill="#4d2f8a"></rect>
                                         <i data-lucide="wc" class="poi-icon" x="227" y="247"></i>
                                     </g>
                                     <!-- Food Concessions -->
-                                    <g id="node-concessions" class="poi-node" data-name="Section 104 Concessions">
+                                    <g id="node-concessions" class="poi-node" data-name="Section 104 Concessions" tabindex="0" aria-label="Food concessions section 104">
                                         <rect x="550" y="330" width="30" height="30" rx="5" fill="#a87f18"></rect>
                                     </g>
                                     <!-- First Aid -->
-                                    <g id="node-firstaid" class="poi-node" data-name="Section 101 First Aid (ADA Access)">
+                                    <g id="node-firstaid" class="poi-node" data-name="Section 101 First Aid (ADA Access)" tabindex="0" aria-label="Medical first aid station section 101">
                                         <rect x="220" y="330" width="30" height="30" rx="5" fill="#a31c1c"></rect>
                                     </g>
                                     <!-- Recycling/Eco Center -->
-                                    <g id="node-recycle" class="poi-node" data-name="Eco-Recycling Center">
+                                    <g id="node-recycle" class="poi-node" data-name="Eco-Recycling Center" tabindex="0" aria-label="Green smart recycling bins section 104">
                                         <rect x="550" y="240" width="30" height="30" rx="5" fill="#188c52"></rect>
                                     </g>
 
                                     <!-- Dynamically Drawn Paths -->
                                     <!-- Base standard connection pathways (hidden/opacity low) -->
-                                    <path id="path-a-101" d="M 400,66 L 400,120" class="map-path-base"></path>
-                                    <path id="path-d-102" d="M 66,300 L 120,300" class="map-path-base"></path>
-                                    <path id="path-b-104" d="M 734,300 L 680,300" class="map-path-base"></path>
-                                    <path id="path-c-103" d="M 400,534 L 400,480" class="map-path-base"></path>
+                                    <path id="path-a-101" d="M 400,66 L 400,120" class="map-path-base" aria-hidden="true"></path>
+                                    <path id="path-d-102" d="M 66,300 L 120,300" class="map-path-base" aria-hidden="true"></path>
+                                    <path id="path-b-104" d="M 734,300 L 680,300" class="map-path-base" aria-hidden="true"></path>
+                                    <path id="path-c-103" d="M 400,534 L 400,480" class="map-path-base" aria-hidden="true"></path>
 
                                     <!-- ADA Elevator/Ramp Overlay Path -->
-                                    <path id="path-ada-ramp" d="M 66,300 L 150,300 L 150,250 L 220,250" class="map-path-base ada-path"></path>
+                                    <path id="path-ada-ramp" d="M 66,300 L 150,300 L 150,250 L 220,250" class="map-path-base ada-path" aria-hidden="true"></path>
 
                                     <!-- Main active display path -->
-                                    <path id="activeNavigationPath" d="" class="map-path-active" stroke-linecap="round"></path>
+                                    <path id="activeNavigationPath" d="" class="map-path-active" stroke-linecap="round" aria-hidden="true"></path>
                                 </svg>
-                                <div class="map-overlay-info" id="mapOverlayInfo">Click nodes or select inputs to generate routes</div>
+                                <div class="map-overlay-info" id="mapOverlayInfo" aria-live="polite">Click nodes or select inputs to generate routes</div>
                             </div>
                         </div>
                     </div>
@@ -400,7 +404,7 @@
                                 
                                 <div class="divider"></div>
 
-                                <div class="route-details-panel hidden" id="routeDetailsPanel">
+                                <div class="route-details-panel hidden" id="routeDetailsPanel" aria-live="polite">
                                     <h4>Route Directions</h4>
                                     <div class="route-stats">
                                         <span class="route-stat-item"><i data-lucide="clock"></i> Est: <strong id="routeEstTime">3 mins</strong></span>
@@ -446,7 +450,7 @@
                                 </form>
 
                                 <div class="divider"></div>
-                                <div class="green-audit-card hidden" id="greenAuditCard">
+                                <div class="green-audit-card hidden" id="greenAuditCard" aria-live="polite">
                                     <div class="audit-header">
                                         <i data-lucide="shield-check" class="text-success"></i>
                                         <span>GenAI Verification Result</span>
@@ -553,7 +557,7 @@
                         </div>
 
                         <!-- GenAI Recommendation Panel -->
-                        <div class="panel mt-4 hidden" id="incidentAuditPanel">
+                        <div class="panel mt-4 hidden" id="incidentAuditPanel" aria-live="polite">
                             <div class="panel-header">
                                 <h3 class="panel-title text-warning"><i data-lucide="shield-check"></i> GenAI Dispatch Recommendation</h3>
                             </div>

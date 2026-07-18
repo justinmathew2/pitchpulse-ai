@@ -1,0 +1,13 @@
+{
+  "name": "pitchpulse-ai",
+  "version": "1.0.0",
+  "description": "FIFA World Cup 2026 Stadium Operations and Fan Experience Hub",
+  "main": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
